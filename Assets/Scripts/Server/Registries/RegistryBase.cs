@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class RegistryBase<T>
+public class RegistryBase<T> where T : IRegistryType
 {
 	public readonly string registryName;
 	private readonly Dictionary<string, T> registry = new Dictionary<string, T>();

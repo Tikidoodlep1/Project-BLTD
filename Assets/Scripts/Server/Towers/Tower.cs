@@ -110,23 +110,23 @@ public class Tower : NetworkBehaviour, ITowerTargetable
 		Debug.Log("OnNetworkSpawn() Finished! Attack Interval: " + this.AttackInterval.Value);
 	}
 	
-	protected override void OnNetworkPostSpawn()
-	{
-		base.OnNetworkPostSpawn();
+	//protected override void OnNetworkPostSpawn()
+	//{
+	//	base.OnNetworkPostSpawn();
 
-		Debug.Log("OnNetworkPostSpawn() Running! Attack Interval: " + _attackInterval);
-		if (IsServer)
-		{
-			this.AttackRangeSizeX.Value = _attackRangeSizeX;
-			this.AttackRangeSizeY.Value = _attackRangeSizeY;
-			this.AttackRangeDistance.Value = _attackRangeDistance;
-			this.AttackSize.Value = _attackSize;
-			this.AttackDuration.Value = _attackDuration;
-			this.AttackInterval.Value = _attackInterval;
-			this.AttackSettings.Value = new TowerAttack(attackType, attackShape, attackEffector);
-		}
-		Debug.Log("OnNetworkPostSpawn() Finished! Attack Interval: " + this.AttackInterval.Value);
-	}
+	//	Debug.Log("OnNetworkPostSpawn() Running! Attack Interval: " + _attackInterval);
+	//	if (IsServer)
+	//	{
+	//		this.AttackRangeSizeX.Value = _attackRangeSizeX;
+	//		this.AttackRangeSizeY.Value = _attackRangeSizeY;
+	//		this.AttackRangeDistance.Value = _attackRangeDistance;
+	//		this.AttackSize.Value = _attackSize;
+	//		this.AttackDuration.Value = _attackDuration;
+	//		this.AttackInterval.Value = _attackInterval;
+	//		this.AttackSettings.Value = new TowerAttack(attackType, attackShape, attackEffector);
+	//	}
+	//	Debug.Log("OnNetworkPostSpawn() Finished! Attack Interval: " + this.AttackInterval.Value);
+	//}
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -139,6 +139,22 @@ public class Tower : NetworkBehaviour, ITowerTargetable
 		if (collision.gameObject != this.gameObject && collision.gameObject.TryGetComponent<ITowerTargetable>(out obj))
 		{
 			Attackables.Add(obj);
+			Debug.Log("Added " + obj.GetTowerTargetTracker().gameObject.name + " to Attackables.");
+		}
+	}
+
+	void OnTriggerStay2D(Collider2D collision)
+	{
+		if (collision != GetComponent<Collider2D>())
+		{
+			Debug.Log("Collider within range!");
+
+			ITowerTargetable obj;
+			if (collision.gameObject != this.gameObject && collision.gameObject.TryGetComponent<ITowerTargetable>(out obj))
+			{
+				Attackables.Add(obj);
+				Debug.Log("ITowerTargetable " + obj.GetTowerTargetTracker().gameObject.name + " found in range.");
+			}
 		}
 	}
 
@@ -153,6 +169,7 @@ public class Tower : NetworkBehaviour, ITowerTargetable
 		if (other.gameObject.TryGetComponent<ITowerTargetable>(out obj))
 		{
 			Attackables.Remove(obj);
+			Debug.Log("Removed " + obj.GetTowerTargetTracker().gameObject.name + " to Attackables.");
 		}
 	}
 

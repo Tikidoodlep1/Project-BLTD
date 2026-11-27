@@ -19,12 +19,9 @@ public class TowerAttack : INetworkSerializable, IEquatable<TowerAttack>
 
 	public TowerAttack(string type, string shape, string effector)
 	{
-		Debug.Log((NetworkManager.Singleton.IsHost ? "[HOST]: " : NetworkManager.Singleton.IsClient ? "[CLIENT]: " : "[SERVER]: ") 
-			+ "Is Game Registries initialized? " + (GameRegistries.Instance != null && GameRegistries.Instance.Initialized));
-
 		this.Type = GameRegistries.Instance.TOWER_ATTACK_TYPES.GetValue(type);
-		this.Shape = GameRegistries.Instance.TOWER_ATTACK_SHAPES.GetValue(type);
-		this.Effector = GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.GetValue(type);
+		this.Shape = GameRegistries.Instance.TOWER_ATTACK_SHAPES.GetValue(shape);
+		this.Effector = GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.GetValue(effector);
 
 		if (this.Type == null)
 		{
@@ -95,31 +92,37 @@ public class TowerAttack : INetworkSerializable, IEquatable<TowerAttack>
 	
 	public virtual void NetworkSerialize<T>(BufferSerializer<T> buf) where T : IReaderWriter
 	{
-		if (Type != null)
+		if (this.Type != null)
 		{
-			Type.NetworkSerialize(buf);
+			this.Type.NetworkSerialize(buf);
 		}
 		else
 		{
-			Debug.Log("Cannot serialize a null TowerAttackType!");
+			Debug.LogWarning("Cannot serialize a null TowerAttackType! Setting to the default TowerAttackType " + TowerAttackType.SINGLE_TARGET);
+			this.Type = GameRegistries.Instance.TOWER_ATTACK_TYPES.GetValue(TowerAttackType.SINGLE_TARGET);
+			this.Type.NetworkSerialize(buf);
 		}
 
-		if (Shape != null)
+		if (this.Shape != null)
 		{
-			Shape.NetworkSerialize(buf);
+			this.Shape.NetworkSerialize(buf);
 		}
 		else
 		{
-			Debug.Log("Cannot serialize a null TowerAttackShape!");
+			Debug.LogWarning("Cannot serialize a null TowerAttackShape! Setting to the default TowerAttackShape " + TowerAttackShape.RECTANGLE);
+			this.Shape = GameRegistries.Instance.TOWER_ATTACK_SHAPES.GetValue(TowerAttackShape.RECTANGLE);
+			this.Shape.NetworkSerialize(buf);
 		}
 
-		if (Effector != null)
+		if (this.Effector != null)
 		{
-			Effector.NetworkSerialize(buf);
+			this.Effector.NetworkSerialize(buf);
 		}
 		else
 		{
-			Debug.Log("Cannot serialize a null TowerAttackEffector!");
+			Debug.LogWarning("Cannot serialize a null TowerAttackEffector! Setting to the default TowerAttackEffector " + TowerAttackEffector.INSTANT);
+			this.Effector = GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.GetValue(TowerAttackEffector.INSTANT);
+			this.Effector.NetworkSerialize(buf);
 		}
 	}
 }

@@ -1,7 +1,6 @@
 using Unity.Netcode;
-using UnityEngine;
 
-public abstract class TowerAttackType : INetworkSerializable
+public abstract class TowerAttackType : INetworkSerializable, IRegistryType
 {
 	public const string SINGLE_TARGET = "SINGLE_TARGET";
 	public const string AOE = "AOE";
@@ -14,12 +13,15 @@ public abstract class TowerAttackType : INetworkSerializable
 	/// <param name="name">The registry name for the TowerAttackType entry. By default, there are "SINGLE_TARGET" and "AOE" entries in ther registry.</param>
 	public TowerAttackType(string name)
 	{
-		name.Replace(" ", "_");
-		name.ToUpper();
+		name = name.Replace(" ", "_");
+		name = name.ToUpper();
 
 		this.name = name;
+	}
 
-		GameRegistries.Instance.TOWER_ATTACK_TYPES.Add(name, this);
+	public string GetRegistryName()
+	{
+		return this.name;
 	}
 
 	public virtual void NetworkSerialize<T>(BufferSerializer<T> buf) where T : IReaderWriter

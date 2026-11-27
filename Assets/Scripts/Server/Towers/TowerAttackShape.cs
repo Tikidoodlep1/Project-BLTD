@@ -1,6 +1,6 @@
 using Unity.Netcode;
 
-public class TowerAttackShape : INetworkSerializable
+public class TowerAttackShape : INetworkSerializable, IRegistryType
 {
 	public const string RECTANGLE = "RECTANGLE";
 	public const string ELLIPSE = "ELLIPSE";
@@ -9,11 +9,15 @@ public class TowerAttackShape : INetworkSerializable
 
 	public TowerAttackShape(string name)
 	{
-		name.Replace(" ", "_");
-		name.ToUpper();
+		name = name.Replace(" ", "_");
+		name = name.ToUpper();
 
 		this.name = name;
-		GameRegistries.Instance.TOWER_ATTACK_SHAPES.Add(name, this);
+	}
+
+	public string GetRegistryName()
+	{
+		return this.name;
 	}
 
 	public virtual void NetworkSerialize<T>(BufferSerializer<T> buf) where T : IReaderWriter

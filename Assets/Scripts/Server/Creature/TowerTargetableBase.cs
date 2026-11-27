@@ -38,6 +38,6 @@ public class TowerTargetableBase : NetworkBehaviour, ITowerTargetable
 
 	public virtual bool IsCurrentlyValidTarget()
 	{
-		return this.health > 0 && !isTargetable;
+		return this.health > 0 && isTargetable;
 	}
 }

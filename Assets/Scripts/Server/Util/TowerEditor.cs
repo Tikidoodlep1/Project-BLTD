@@ -4,9 +4,6 @@ using UnityEditor;
 [CustomEditor(typeof(Tower))]
 public class TowerEditor : Editor
 {
-	//This is BAD, DON'T DO THIS
-	private GameRegistries tempRegistry = new GameRegistries();
-
 	private string[] attackTypeOptions;
 	private string[] attackShapeOptions;
 	private string[] attackEffectorOptions;
@@ -15,24 +12,27 @@ public class TowerEditor : Editor
 	{
 		DrawDefaultInspector();
 
-		tempRegistry.InitRegistry();
+		if (!GameRegistries.Instance.Initialized)
+		{
+			GameRegistries.Instance.InitRegistry();
+		}
 
 		if (attackTypeOptions == null || attackTypeOptions.Length <= 0 || string.IsNullOrWhiteSpace(attackTypeOptions[0]) || GUILayout.Button("Refresh Attack Types List"))
 		{
-			attackTypeOptions = new string[tempRegistry.TOWER_ATTACK_TYPES.GetKeys().Count];
-			tempRegistry.TOWER_ATTACK_TYPES.GetKeys().CopyTo(attackTypeOptions, 0);
+			attackTypeOptions = new string[GameRegistries.Instance.TOWER_ATTACK_TYPES.GetKeys().Count];
+			GameRegistries.Instance.TOWER_ATTACK_TYPES.GetKeys().CopyTo(attackTypeOptions, 0);
 		}
 
 		if (attackShapeOptions == null || attackShapeOptions.Length <= 0 || string.IsNullOrWhiteSpace(attackShapeOptions[0]) || GUILayout.Button("Refresh Attack Shapes List"))
 		{
-			attackShapeOptions = new string[tempRegistry.TOWER_ATTACK_SHAPES.GetKeys().Count];
-			tempRegistry.TOWER_ATTACK_SHAPES.GetKeys().CopyTo(attackShapeOptions, 0);
+			attackShapeOptions = new string[GameRegistries.Instance.TOWER_ATTACK_SHAPES.GetKeys().Count];
+			GameRegistries.Instance.TOWER_ATTACK_SHAPES.GetKeys().CopyTo(attackShapeOptions, 0);
 		}
 
 		if (attackEffectorOptions == null || attackEffectorOptions.Length <= 0 || string.IsNullOrWhiteSpace(attackEffectorOptions[0]) || GUILayout.Button("Refresh Attack Effectors List"))
 		{
-			attackEffectorOptions = new string[tempRegistry.TOWER_ATTACK_EFFECTORS.GetKeys().Count];
-			tempRegistry.TOWER_ATTACK_EFFECTORS.GetKeys().CopyTo(attackEffectorOptions, 0);
+			attackEffectorOptions = new string[GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.GetKeys().Count];
+			GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.GetKeys().CopyTo(attackEffectorOptions, 0);
 		}
 
 		if (this.target is Tower)

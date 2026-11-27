@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2024600833055240880}
   - component: {fileID: 2273659921238630482}
-  - component: {fileID: 3722000572952524091}
   - component: {fileID: 5741716998710683147}
+  - component: {fileID: 3722000572952524091}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Untagged
@@ -93,20 +93,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &3722000572952524091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2433245032360147356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53b19634479e24b4d9ee1cccf1f31580, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TowerTargetableBase
-  health: 15
-  isTargetable: 1
 --- !u!114 &5741716998710683147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,14 +105,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1333415234
+  GlobalObjectIdHash: 1335431495
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
-  m_InScenePlaced: 1
+  m_InScenePlaced: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
@@ -134,3 +120,18 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &3722000572952524091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2433245032360147356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b19634479e24b4d9ee1cccf1f31580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerTargetableBase
+  ShowTopMostFoldoutHeaderGroup: 1
+  health: 15
+  isTargetable: 1

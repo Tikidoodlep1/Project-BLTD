@@ -50,7 +50,7 @@ public class TowerController : NetworkBehaviour
 
     void FixedUpdate()
     {
-		if (IsSpawned && this.tower.IsSpawned) 
+		if (NetworkManager.IsServer && IsSpawned && this.tower.IsSpawned) 
 		{
 			UpdateTowerAI();
 			TurnTowerTowardsTarget();

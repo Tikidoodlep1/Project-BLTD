@@ -18,11 +18,15 @@ public class GameRegistries : NetworkBehaviour
 		}
 	}
 
-	//Register towers here for later use with objects - Maybe a GameObject can choose from a list of Towers in a dropdown menu (Have to create that custom field attribute)
-	//public static readonly RegistryBase<Tower> TOWERS = new RegistryBase<Tower>("Towers");
-	public readonly RegistryBase<TowerAttackType> TOWER_ATTACK_TYPES = new RegistryBase<TowerAttackType>("TowerAttackTypes");
-	public readonly RegistryBase<TowerAttackShape> TOWER_ATTACK_SHAPES = new RegistryBase<TowerAttackShape>("TowerAttackShapes");
-	public readonly RegistryBase<TowerAttackEffector> TOWER_ATTACK_EFFECTORS = new RegistryBase<TowerAttackEffector>("TowerAttackEffectors");
+	//Registry Names
+	public const string TOWER_ATTACK_TYPE_REGISTRY_NAME = "TowerAttackTypes";
+	public const string TOWER_ATTACK_SHAPE_REGISTRY_NAME = "TowerAttackShapes";
+	public const string TOWER_ATTACK_EFFECTOR_REGISTRY_NAME = "TowerAttackEffectors";
+
+	//Registries
+	public readonly RegistryBase<TowerAttackType> TOWER_ATTACK_TYPES = new RegistryBase<TowerAttackType>(TOWER_ATTACK_TYPE_REGISTRY_NAME);
+	public readonly RegistryBase<TowerAttackShape> TOWER_ATTACK_SHAPES = new RegistryBase<TowerAttackShape>(TOWER_ATTACK_SHAPE_REGISTRY_NAME);
+	public readonly RegistryBase<TowerAttackEffector> TOWER_ATTACK_EFFECTORS = new RegistryBase<TowerAttackEffector>(TOWER_ATTACK_EFFECTOR_REGISTRY_NAME);
 
 	public override void OnNetworkSpawn()
 	{
@@ -44,7 +48,7 @@ public class GameRegistries : NetworkBehaviour
 	{
 		base.OnNetworkDespawn();
 
-		if (Instance != null)
+		if (Instance == this)
 		{
 			Instance = null;
 		}
@@ -61,9 +65,15 @@ public class GameRegistries : NetworkBehaviour
 		TowerAttackType SINGLE_TARGET = new SingleTargetTowerAttackType();
 		TowerAttackType AOE = new AoeTowerAttackType();
 
+		GameRegistries.Instance.TOWER_ATTACK_TYPES.Add(SINGLE_TARGET.name, SINGLE_TARGET);
+		GameRegistries.Instance.TOWER_ATTACK_TYPES.Add(AOE.name, AOE);
+
 		//Attack Shapes
 		TowerAttackShape RECTANGLE = new TowerAttackShape(TowerAttackShape.RECTANGLE);
 		TowerAttackShape ELLIPSE = new TowerAttackShape(TowerAttackShape.ELLIPSE);
+
+		GameRegistries.Instance.TOWER_ATTACK_SHAPES.Add(RECTANGLE.name, RECTANGLE);
+		GameRegistries.Instance.TOWER_ATTACK_SHAPES.Add(ELLIPSE.name, ELLIPSE);
 
 		//Attack Effectors
 		TowerAttackEffector INSTANT = new InstantTowerAttackEffector();
@@ -71,6 +81,12 @@ public class GameRegistries : NetworkBehaviour
 		TowerAttackEffector CIRCLE_WAVE_SHRINK = new CircleWaveShrinkTowerAttackEffector();
 		TowerAttackEffector SWIPE = new SwipeTowerAttackEffector();
 		TowerAttackEffector SWIPE_RETURN = new SwipeReturnTowerAttackEffector();
+
+		GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.Add(INSTANT.name, INSTANT);
+		GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.Add(CIRCLE_WAVE_GROW.name, CIRCLE_WAVE_GROW);
+		GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.Add(CIRCLE_WAVE_SHRINK.name, CIRCLE_WAVE_SHRINK);
+		GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.Add(SWIPE.name, SWIPE);
+		GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.Add(SWIPE_RETURN.name, SWIPE_RETURN);
 
 		Debug.Log("Registering Game Registries! Is Server? " + NetworkManager.Singleton.IsServer + ", Is Client? " + NetworkManager.Singleton.IsClient + ", Is Host? " + NetworkManager.Singleton.IsHost);
 	}

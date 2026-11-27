@@ -11,7 +11,7 @@ using UnityEngine;
 /// <para>To aid in the statelessness of a TowerAttackEffector, the target, the tower, and the attack progress are passed to 
 /// <see cref="StartAttack(ITowerTargetable, Tower, float)"/> and <seealso cref="UpdateAttack(ITowerTargetable, Tower, float)"/></para>
 /// </summary>
-public abstract class TowerAttackEffector : INetworkSerializable
+public abstract class TowerAttackEffector : INetworkSerializable, IRegistryType
 {
 	public const string INSTANT = "INSTANT";
 	public const string CIRCLE_WAVE_GROW = "CIRCLE_WAVE_GROW";
@@ -23,11 +23,15 @@ public abstract class TowerAttackEffector : INetworkSerializable
 
 	public TowerAttackEffector(string name)
 	{
-		name.Replace(" ", "_");
-		name.ToUpper();
+		name = name.Replace(" ", "_");
+		name = name.ToUpper();
 
 		this.name = name;
-		GameRegistries.Instance.TOWER_ATTACK_EFFECTORS.Add(name, this);
+	}
+
+	public string GetRegistryName()
+	{
+		return this.name;
 	}
 
 	public virtual void NetworkSerialize<T>(BufferSerializer<T> buf) where T : IReaderWriter
